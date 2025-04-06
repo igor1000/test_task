@@ -1,0 +1,21 @@
+FROM php:8.2-fpm
+
+RUN apt-get update \
+    && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
+
+ARG UID=1000
+ARG GID=1000
+ENV UID=${UID}
+ENV GID=${GID}
+
+USER root
+
+RUN <<EOF
+  groupmod --gid=${GID} www-data
+  usermod --uid=${UID} --gid=${GID} www-data
+EOF
+
+USER www-data
+
+WORKDIR /var/www

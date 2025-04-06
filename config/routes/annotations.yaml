@@ -1,0 +1,9 @@
+controllers:
+  resource: ../../src/People/Http/Controller/
+  prefix: '/people'
+  name_prefix: 'people_'
+  type: annotation
+
+kernel:
+  resource: ../../src/Kernel.php
+  type: annotation
