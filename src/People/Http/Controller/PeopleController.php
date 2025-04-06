@@ -4,32 +4,22 @@ declare(strict_types=1);
 
 namespace App\People\Http\Controller;
 
-use App\People\Application\UseCase\PeopleUseCase;
+use App\People\Application\UseCase\GetYearsWithMaxLivePeople;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class PeopleController extends AbstractController
+final class PeopleController extends AbstractController
 {
     public function __construct(
-        private PeopleUseCase $peopleUseCase
+        private readonly GetYearsWithMaxLivePeople $getYearsWithMaxLivePeople
     ) {
     }
 
-    #[Route('/get-years-with-max-live-people')]
-    public function getYearsWithMaxLivePeople(): Response
+    #[Route(path: '/get-years-with-max-live-people/{countPeople<\d+>}', defaults: ['countPeople' => 10])]
+    public function getYearsWithMaxLivePeople(Request $request): Response
     {
-        $persons = $this->peopleUseCase->createTablePersons(20);
-
-        $yearsWithUsers = $this->peopleUseCase->getCountPeopleGroupByYear(
-            $persons,
-            $this->peopleUseCase->getMinAndMaxYEars($persons)
-        );
-
-        uasort($yearsWithUsers, fn($firstYear, $secondYear) => $secondYear <=> $firstYear);
-
-        $yearsWithUsers = array_slice(array_flip($yearsWithUsers), 0, 5);
-
-        return $this->json($yearsWithUsers);
+        return $this->json($this->getYearsWithMaxLivePeople->handle((int)$request->get('countPeople')));
     }
 }

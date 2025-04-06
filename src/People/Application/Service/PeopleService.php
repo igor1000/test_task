@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\People\Application\UseCase;
+namespace App\People\Application\Service;
 
-use App\Common\Application\Factory\FakerFactory;
+use App\Common\Domain\FakerInterface;
 use App\People\Application\Dto\MaxAndMinYear;
 use App\People\Application\Dto\Person;
 
-final readonly class PeopleUseCase
+final readonly class PeopleService
 {
     public function __construct(
-        private FakerFactory $fakerFactory
+        private FakerInterface $fakerFactory
     ) {
     }
 
@@ -27,7 +27,7 @@ final readonly class PeopleUseCase
 
         $users = [];
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= $countPersons; $i++) {
             $users[$i] = Person::create($i, $faker->year, $faker->year);
         }
 
