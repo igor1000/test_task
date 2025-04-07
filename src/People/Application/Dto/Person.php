@@ -3,18 +3,16 @@
 declare(strict_types=1);
 
 namespace App\People\Application\Dto;
-final readonly class Person
+final class Person
 {
-    private function __construct(
-        public int $id,
-        public int $birthYear,
-        public int $deathYear
-    )
-    {
-    }
+    public int $id;
+    public int $birthYear;
+    public int $deathYear;
 
-    public static function create(int $id, string $birthYear, string $deathYear): self
+    public function __construct(int $id, int $birthYear, int $deathYear)
     {
-        return new self($id, (int)$birthYear, (int)$deathYear);
+        $this->id = $id;
+        $this->birthYear = $birthYear;
+        $this->deathYear = $deathYear;
     }
 }

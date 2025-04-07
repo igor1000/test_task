@@ -1,7 +1,7 @@
 FROM composer:2.8.3 AS composer
 FROM mlocati/php-extension-installer:2.7.4 AS php-extension-installer
 
-FROM php:8.2-cli
+FROM php:7.4-cli
 
 COPY --from=composer /usr/bin/composer /usr/bin/
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
